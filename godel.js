@@ -61,11 +61,11 @@
       },
 
       eq = function (c1, c2) {
-        return c1 === c2;
+        return result(c1) === result(c2);
       },
 
       neq = function (c1, c2) {
-        return c1 !== c2;
+        return result(c1) !== result(c2);
       };
 
   /////////////////////
@@ -88,6 +88,10 @@
           });
       },
 
+      not = function (c1) {
+        return cond(c1, 0, 1);
+      },
+
       lt = function (x, y) {
         // TODO: Doesn't handle negative inputs
 
@@ -100,6 +104,10 @@
           function () {
             return lt(decr(x), decr(y));
           });
+      },
+
+      gt = function () {
+
       },
 
       // Addition is x incremented y times
@@ -141,6 +149,7 @@
   var composed = {
     or: or,
     and: and,
+    not: not,
     lt: lt,
     add: add,
     sub: sub,
