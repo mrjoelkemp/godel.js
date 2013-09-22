@@ -62,6 +62,9 @@
         return result(toFunc(f)) ? toFunc(x)() : toFunc(y)();
       },
 
+      // It can be said that x and y are equal if both hit zero
+      // at the same time. However, you'd have to be able to check
+      // whether x or y is *equal* to zero. Hence, it's a base construct
       eq = function (x, y) {
         return result(x) === result(y);
       };
@@ -98,6 +101,7 @@
         return eq(x, 0);
       },
 
+      // Less than
       lt = function (x, y) {
         return cond(or(isZero(x), isZero(y)),
           function () {
@@ -110,8 +114,19 @@
           });
       },
 
+      // Greater than
       gt = function (x, y) {
         return not(lt(x, y));
+      },
+
+      // Less than or equal to
+      lte = function (x, y) {
+        return or(lt(x, y), eq(x, y));
+      },
+
+      // Greater than or equal to
+      gte = function (x, y) {
+        return or(gt(x, y), eq(x, y));
       },
 
       // Addition is x incremented y times
@@ -133,16 +148,17 @@
       },
 
       // Mult is x incremented by x, y - 1 times
+      // If x or y is zero, then the product is zero
       mult = function (x, y) {
-        return cond(or(isZero(x), isZero(y)), 0, function () {
-
-          return cond(isZero(decr(y)),
-            x,
-            function () {
-              return mult(add(x,x), decr(y));
-            }
-          );
-        });
+        return cond(or(isZero(x), isZero(y)), 0,
+          function () {
+            return cond(isZero(decr(y)),
+              x,
+              function () {
+                return mult(add(x,x), decr(y));
+              }
+            );
+          });
 
       },
 
@@ -170,6 +186,8 @@
     isZero: isZero,
     lt: lt,
     gt: gt,
+    lte: lte,
+    gte: gte,
     add: add,
     sub: sub,
     mult: mult,

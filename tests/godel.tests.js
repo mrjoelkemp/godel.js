@@ -156,6 +156,28 @@ describe('derived operations', function() {
       });
     });
 
+    describe('lte', function() {
+      it('returns a truthy value if the first argument resolves to a value less than or equal to the second', function() {
+        expect(g.lte(1, 2)).toBeTruthy();
+        expect(g.lte(2, 2)).toBeTruthy();
+      });
+
+      it('returns a falsy value if the first argument resolves to a value greater than the second', function() {
+        expect(g.lte(2, 1)).toBeFalsy();
+      });
+    });
+
+    describe('gte', function() {
+      it('returns a truthy value if the first argument resolves to a value greater than or equal to the second', function() {
+        expect(g.gte(2, 1)).toBeTruthy();
+        expect(g.gte(2, 2)).toBeTruthy();
+      });
+
+      it('returns a falsy value if the first argument resolves to a value less than the second', function() {
+        expect(g.gte(1, 2)).toBeFalsy();
+      });
+    });
+
     describe('add', function () {
       it('computes the sum of two numbers', function() {
         expect(g.add(2, 2)).toBe(4);
