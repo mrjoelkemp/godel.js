@@ -93,12 +93,17 @@
         return not(eq(x, y));
       },
 
+      // Helper macro
+      isZero = function (x) {
+        return eq(x, 0);
+      },
+
       lt = function (x, y) {
-        return cond( or(eq(x, 0), eq(y, 0)) ,
+        return cond(or(isZero(x), isZero(y)),
           function () {
             // If x is not zero, then you must have reached here when y was 0
             // and in that case, x > y, so return false
-            return and(eq(x, 0), neq(y, 0));
+            return and(isZero(x), not(isZero(y)));
           },
           function () {
             return lt(decr(x), decr(y));
@@ -111,7 +116,7 @@
 
       // Addition is x incremented y times
       add = function (x, y) {
-        return cond(eq(y, 0),
+        return cond(isZero(y),
           x,
           function () {
             return add(incr(x), decr(y));
@@ -120,7 +125,7 @@
 
       // Subtraction is x decremented y times
       sub = function (x, y) {
-        return cond(eq(y, 0),
+        return cond(isZero(y),
           x,
           function () {
             return sub(decr(x), decr(y));
@@ -129,7 +134,7 @@
 
       // Mult is x incremented by x, y - 1 times
       mult = function (x, y) {
-        return cond(eq(decr(y), 0),
+        return cond(isZero(decr(y)),
           x,
           function () {
             return mult(add(x,x), decr(y));
@@ -158,6 +163,7 @@
     and: and,
     not: not,
     neq: neq,
+    isZero: isZero,
     lt: lt,
     gt: gt,
     add: add,

@@ -123,6 +123,15 @@ describe('derived operations', function() {
       });
     });
 
+    describe('isZero', function() {
+      it('returns true if the argument resolves to 0', function() {
+        expect(g.isZero(0)).toBeTruthy();
+      });
+      it('returns false if the argument does not resolve to 0', function() {
+        expect(g.isZero(1)).toBeFalsy();
+      });
+    });
+
     describe('lt', function() {
       it('returns a truthy value if the first argument resolves to a value less than the second', function() {
         expect(g.lt(1, 2)).toBeTruthy();
