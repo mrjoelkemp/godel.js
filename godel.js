@@ -91,11 +91,11 @@
       lt = function (x, y) {
         // TODO: Doesn't handle negative inputs
 
-        return cond( eq(x, 0) || eq(y, 0) ,
+        return cond( or(eq(x, 0), eq(y, 0)) ,
           function () {
             // If x is not zero, then you must have reached here when y was 0
             // and in that case, x > y, so return false
-            return eq(x, 0) && neq(y, 0);
+            return and(eq(x, 0), neq(y, 0));
           },
           function () {
             return lt(decr(x), decr(y));
