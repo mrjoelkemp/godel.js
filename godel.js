@@ -127,9 +127,14 @@
           });
       },
 
-      // Mult is x incremented by x, y times
-      mult = function () {
-
+      // Mult is x incremented by x, y - 1 times
+      mult = function (x, y) {
+        return cond(eq(decr(y), 0),
+          x,
+          function () {
+            return mult(add(x,x), decr(y));
+          }
+        );
       },
 
       // How the fiyuck do we handle rational numbers?
