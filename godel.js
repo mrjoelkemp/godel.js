@@ -73,6 +73,21 @@
   /////////////////////
 
   var
+
+      and = function (c1, c2) {
+        return cond(c1, function () {
+          return cond(c2, 1);
+        });
+      },
+
+      or = function (c1, c2) {
+        return cond(c1,
+          1,
+          function () {
+            return cond(c2, 1);
+          });
+      },
+
       lt = function (x, y) {
         // TODO: Doesn't handle negative inputs
 
@@ -124,6 +139,8 @@
   extend(g, base);
 
   var composed = {
+    or: or,
+    and: and,
     lt: lt,
     add: add,
     sub: sub,
