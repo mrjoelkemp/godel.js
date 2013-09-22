@@ -134,12 +134,16 @@
 
       // Mult is x incremented by x, y - 1 times
       mult = function (x, y) {
-        return cond(isZero(decr(y)),
-          x,
-          function () {
-            return mult(add(x,x), decr(y));
-          }
-        );
+        return cond(or(isZero(x), isZero(y)), 0, function () {
+
+          return cond(isZero(decr(y)),
+            x,
+            function () {
+              return mult(add(x,x), decr(y));
+            }
+          );
+        });
+
       },
 
       // How the fiyuck do we handle rational numbers?

@@ -176,10 +176,12 @@ describe('derived operations', function() {
       it('computes the product of two numbers', function() {
         expect(g.mult(2, 2)).toBe(4);
         expect(g.mult(2, 1)).toBe(2);
+        expect(g.mult(20, 2)).toBe(40);
       });
 
       it('returns 0 if any number is multiplied by 0', function () {
         expect(g.mult(2, 0)).toBe(0);
+        expect(g.mult(0, 2)).toBe(0);
       });
     });
   });
