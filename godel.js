@@ -13,7 +13,13 @@
   }
 
   function toFunc(s) {
-    return typeof s !== 'function' ? new Function(s) : s;
+    if (typeof s !== 'function') {
+      return function () {
+        return s;
+      };
+    }
+
+    return s;
   }
 
   // Inline modification of object
@@ -34,56 +40,95 @@
   // Base constructs
   /////////////////////
 
-  var base = {
+  // return is assumed to be a base keyword
+  // All constructs handle first class functions
 
-    incr: function (f) {
-      // TODO: inc of array does a map of inc
-      var r = result(f);
-      return ++r;
-    },
+  var
+      incr = function (f) {
+        var r = result(f);
+        return ++r;
+      },
 
-    decr: function (f) {
-      // TODO: Does this have to be a base construct?
-      var r = result(f);
-      return --r;
-    },
+      // Decrease the value of f by 1
+      // If it's zero, then return 0 (so that less than can be built)
+      decr = function (f) {
+        var r = result(f);
+        return r === 0 ? 0 : --r;
+      },
 
-    'if': function (f, c1, c2) {
-      return result(f) ? toFunc(c1)() : toFunc(c2)();
-    }
+      cond = function (f, c1, c2) {
+        return result(toFunc(f)) ? toFunc(c1)() : toFunc(c2)();
+      },
 
-  };
+      eq = function (c1, c2) {
+        return c1 === c2;
+      },
 
-  extend(g, base);
+      neq = function (c1, c2) {
+        return c1 !== c2;
+      };
 
   /////////////////////
   // Composed functions
   /////////////////////
 
+  var
+      lt = function (x, y) {
+        // TODO: Doesn't handle negative inputs
+
+        return cond( eq(x, 0) || eq(y, 0) ,
+          function () {
+            // If x is not zero, then you must have reached here when y was 0
+            // and in that case, x > y, so return false
+            return eq(x, 0) && neq(y, 0);
+          },
+          function () {
+            return lt(decr(x), decr(y));
+          });
+      },
+
+      // Addition is x incremented y times
+      // 2 + -2
+      add = function (x, y) {
+        // cond(lt(y, 0), function () {
+        //   add(decr(x), incr(y));
+        // });
+
+        // cond(eq(y, 0), x);
+
+        // add(incr(x), decr(y));
+      },
+
+      sub = function () {
+
+      },
+
+      mult = function () {
+
+      },
+
+      div = function () {
+
+      };
+
+  // Public API
+
+  var base = {
+    incr: incr,
+    decr: decr,
+    cond: cond,
+    eq: eq,
+    neq: neq
+  };
+
+  extend(g, base);
+
   var composed = {
-
-    // Addition is op1 incremented op2 times
-    // 2 + -2
-    add: function (op1, op2) {
-      if (op2 < 0)    return this.add(this.decr(op1), this.incr(op2));
-
-      if (op2 === 0)  return op1;
-
-      return this.add(this.incr(op1), this.decr(op2));
-    },
-
-    sub: function () {
-
-    },
-
-    mult: function () {
-
-    },
-
-    div: function () {
-
-    }
-
+    lt: lt,
+    add: add,
+    sub: sub,
+    mult: mult,
+    div: div
   };
 
   extend(g, composed);
