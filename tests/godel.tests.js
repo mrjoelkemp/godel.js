@@ -46,16 +46,6 @@ describe('base operations', function () {
     });
   });
 
-  describe('neq', function() {
-    it('returns true if two values are not equal', function () {
-      expect(g.neq(2, 0)).toBeTruthy();
-    });
-
-    it('supports function arguments', function() {
-      expect(g.neq(function () { return 2; }, function () { return 0; })).toBeTruthy;
-    });
-  });
-
   describe('cond', function() {
     it('returns the evaluation of the second argument if the condition is true', function() {
       expect(g.cond(g.eq(1, 1), 1, 2)).toBe(1);
@@ -123,6 +113,15 @@ describe('derived operations', function() {
   });
 
   describe('arithmetic operations', function() {
+    describe('neq', function() {
+      it('returns true if two values are not equal', function () {
+        expect(g.neq(2, 0)).toBeTruthy();
+      });
+
+      it('supports function arguments', function() {
+        expect(g.neq(function () { return 2; }, function () { return 0; })).toBeTruthy;
+      });
+    });
 
     describe('lt', function() {
       it('returns a truthy value if the first argument resolves to a value less than the second', function() {

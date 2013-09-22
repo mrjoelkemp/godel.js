@@ -37,7 +37,7 @@
   }
 
   /////////////////////
-  // Base constructs
+  // Basic functions
   /////////////////////
 
   // return is assumed to be a base keyword
@@ -58,40 +58,39 @@
         return r === 0 ? 0 : --r;
       },
 
-      cond = function (f, c1, c2) {
-        return result(toFunc(f)) ? toFunc(c1)() : toFunc(c2)();
+      cond = function (f, x, y) {
+        return result(toFunc(f)) ? toFunc(x)() : toFunc(y)();
       },
 
-      eq = function (c1, c2) {
-        return result(c1) === result(c2);
-      },
-
-      neq = function (c1, c2) {
-        return result(c1) !== result(c2);
+      eq = function (x, y) {
+        return result(x) === result(y);
       };
 
   /////////////////////
-  // Composed functions
+  // Computable functions
   /////////////////////
 
   var
-
-      and = function (c1, c2) {
-        return cond(c1, function () {
-          return cond(c2, 1);
+      and = function (x, y) {
+        return cond(x, function () {
+          return cond(y, 1);
         });
       },
 
-      or = function (c1, c2) {
-        return cond(c1,
+      or = function (x, y) {
+        return cond(x,
           1,
           function () {
-            return cond(c2, 1);
+            return cond(y, 1);
           });
       },
 
-      not = function (c1) {
-        return cond(c1, 0, 1);
+      not = function (x) {
+        return cond(x, 0, 1);
+      },
+
+      neq = function (x, y) {
+        return not(eq(x, y));
       },
 
       lt = function (x, y) {
@@ -144,8 +143,7 @@
     incr: incr,
     decr: decr,
     cond: cond,
-    eq: eq,
-    neq: neq
+    eq: eq
   };
 
   extend(g, base);
@@ -154,6 +152,7 @@
     or: or,
     and: and,
     not: not,
+    neq: neq,
     lt: lt,
     gt: gt,
     add: add,
