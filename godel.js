@@ -120,7 +120,11 @@
 
       // Subtraction is x decremented y times
       sub = function (x, y) {
-        // return add(x, -y);
+        return cond(eq(y, 0),
+          x,
+          function () {
+            return sub(decr(x), decr(y));
+          });
       },
 
       // Mult is x incremented by x, y times
