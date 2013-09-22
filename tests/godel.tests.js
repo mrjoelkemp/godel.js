@@ -74,6 +74,7 @@ describe('derived operations', function() {
       it('returns a truthy value if both arguments resolve to true', function() {
         expect(g.and(g.eq(2, 2), g.eq(1, 1))).toBeTruthy();
         expect(g.and(g.eq(2, 2), g.neq(1, 0))).toBeTruthy();
+        expect(g.and(g.or(g.eq(2, 1), g.lt(1, 2)), g.neq(1, 0))).toBeTruthy();
         expect(g.and(function () { return g.eq(2, 2); }, function () { return g.eq(1, 1); })).toBeTruthy();
       });
 
@@ -182,6 +183,8 @@ describe('derived operations', function() {
       it('computes the sum of two numbers', function() {
         expect(g.add(2, 2)).toBe(4);
         expect(g.add(2, 0)).toBe(2);
+        expect(g.add(15, 15)).toBe(30);
+        expect(g.add(g.add(2, 1), 1)).toBe(4);
         expect(g.add(function () { return 2; }, function () { return 2; })).toBe(4);
       });
     });
@@ -191,6 +194,7 @@ describe('derived operations', function() {
         expect(g.sub(2, 2)).toBe(0);
         expect(g.sub(2, 0)).toBe(2);
         expect(g.sub(4, 2)).toBe(2);
+        expect(g.sub(10, 10)).toBe(0);
       });
     });
 
@@ -199,11 +203,21 @@ describe('derived operations', function() {
         expect(g.mult(2, 2)).toBe(4);
         expect(g.mult(2, 1)).toBe(2);
         expect(g.mult(20, 2)).toBe(40);
+        expect(g.mult(1, 2)).toBe(2);
+        expect(g.mult(10, 10)).toBe(100);
       });
 
       it('returns 0 if any number is multiplied by 0', function () {
         expect(g.mult(2, 0)).toBe(0);
         expect(g.mult(0, 2)).toBe(0);
+        expect(g.mult(0, 100)).toBe(0);
+      });
+    });
+
+    describe('exp', function() {
+      it('raises the first argument to the power of the second argument', function() {
+        expect(g.exp(2, 2)).toBe(4);
+        expect(g.exp(10, 2)).toBe(100);
       });
     });
   });

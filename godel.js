@@ -152,14 +152,22 @@
       mult = function (x, y) {
         return cond(or(isZero(x), isZero(y)), 0,
           function () {
-            return cond(isZero(decr(y)),
+            return cond(eq(y, 1),
               x,
               function () {
-                return mult(add(x,x), decr(y));
+                return add(x, mult(x, decr(y)));
               }
             );
           });
+      },
 
+      // Raise x to the power of y
+      exp = function (x, y) {
+        return cond(eq(y, 1),
+          x,
+          function () {
+            return exp(mult(x, x), decr(y));
+          });
       },
 
       // How the fiyuck do we handle rational numbers?
@@ -191,6 +199,7 @@
     add: add,
     sub: sub,
     mult: mult,
+    exp: exp,
     div: div
   };
 
