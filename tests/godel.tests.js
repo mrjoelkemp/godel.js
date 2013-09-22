@@ -154,5 +154,12 @@ describe('derived operations', function() {
         expect(g.add(function () { return 2; }, function () { return 2; })).toBe(4);
       });
     });
+
+    describe('sub', function () {
+      it('computes the difference of two numbers', function() {
+        // expect(g.sub(2, 2)).toBe(0);
+        expect(g.sub(2, 0)).toBe(2);
+      });
+    });
   });
 });

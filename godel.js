@@ -111,28 +111,24 @@
 
       // Addition is x incremented y times
       add = function (x, y) {
-
-        return cond(lt(y, 0),
+        return cond(eq(y, 0),
+          x,
           function () {
-            return add(decr(x), incr(y));
-          },
-          function () {
-            return cond(eq(y, 0),
-              x,
-              function () {
-                return add(incr(x), decr(y));
-              });
+            return add(incr(x), decr(y));
           });
       },
 
-      sub = function () {
-
+      // Subtraction is x decremented y times
+      sub = function (x, y) {
+        // return add(x, -y);
       },
 
+      // Mult is x incremented by x, y times
       mult = function () {
 
       },
 
+      // How the fiyuck do we handle rational numbers?
       div = function () {
 
       };
