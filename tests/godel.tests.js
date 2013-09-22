@@ -151,6 +151,8 @@ describe('derived operations', function() {
     describe('add', function () {
       it('computes the sum of two numbers', function() {
         expect(g.add(2, 2)).toBe(4);
+        expect(g.add(2, 0)).toBe(2);
+        expect(g.add(function () { return 2; }, function () { return 2; })).toBe(4);
       });
     });
   });

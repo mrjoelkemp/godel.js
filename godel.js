@@ -50,7 +50,9 @@
       },
 
       // Decrease the value of f by 1
-      // If it's zero, then return 0 (so that less than can be built)
+      // Note: If it's zero, then return 0 – not a negative number
+      // You can't tell if a number is negative unless you can
+      // compare it to zero (i.e., can use less than)
       decr = function (f) {
         var r = result(f);
         return r === 0 ? 0 : --r;
@@ -93,8 +95,6 @@
       },
 
       lt = function (x, y) {
-        // TODO: Doesn't handle negative inputs
-
         return cond( or(eq(x, 0), eq(y, 0)) ,
           function () {
             // If x is not zero, then you must have reached here when y was 0
@@ -111,15 +111,19 @@
       },
 
       // Addition is x incremented y times
-      // 2 + -2
       add = function (x, y) {
-        // cond(lt(y, 0), function () {
-        //   add(decr(x), incr(y));
-        // });
 
-        // cond(eq(y, 0), x);
-
-        // add(incr(x), decr(y));
+        return cond(lt(y, 0),
+          function () {
+            return add(decr(x), incr(y));
+          },
+          function () {
+            return cond(eq(y, 0),
+              x,
+              function () {
+                return add(incr(x), decr(y));
+              });
+          });
       },
 
       sub = function () {
