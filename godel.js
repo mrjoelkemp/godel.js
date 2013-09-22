@@ -106,8 +106,8 @@
           });
       },
 
-      gt = function () {
-
+      gt = function (x, y) {
+        return not(lt(x, y));
       },
 
       // Addition is x incremented y times
@@ -151,6 +151,7 @@
     and: and,
     not: not,
     lt: lt,
+    gt: gt,
     add: add,
     sub: sub,
     mult: mult,
