@@ -219,6 +219,10 @@ describe('derived operations', function() {
         expect(g.exp(2, 2)).toBe(4);
         expect(g.exp(10, 2)).toBe(100);
       });
+
+      it('returns 1 is anything is raised to the power of zero', function () {
+        expect(g.exp(2, 0)).toBe(1);
+      });
     });
   });
 });

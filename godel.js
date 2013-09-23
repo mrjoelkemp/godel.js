@@ -41,30 +41,37 @@
   /////////////////////
 
   // return is assumed to be a base keyword
-  // All constructs handle first class functions
+  // All constructs handle first class functions that return elements in the supported domain
+  // The algebra's domain is only the set of natural numbers
+  // All base constructs of the language are implemented in the host (javascript) language
+  // Derived functions should only be implemented using the basic functions
+  //    and applications of composition and recursion
 
   var
+      // Returns the result of f incremented by 1
       incr = function (f) {
         var r = result(f);
         return ++r;
       },
 
-      // Decrease the value of f by 1
-      // Note: If it's zero, then return 0 – not a negative number
+      // Returns the result of f decremented by 1
+      // Note: The decr(0) is zero – not a negative number
       // You can't tell if a number is negative unless you can
-      // compare it to zero (i.e., can use less than)
+      // compare it to zero (i.e., can use less than – which is defined with decr)
       decr = function (f) {
         var r = result(f);
         return r === 0 ? 0 : --r;
       },
 
+      // Conditional jump/xecution
+      // If the result of f is true, then return the result of x, else return the result of y
       cond = function (f, x, y) {
         return result(toFunc(f)) ? toFunc(x)() : toFunc(y)();
       },
 
-      // It can be said that x and y are equal if both hit zero
-      // at the same time. However, you'd have to be able to check
-      // whether x or y is *equal* to zero. Hence, it's a base construct
+      // It can be said that x and y are equal if both hit zero at the same time.
+      // However, you'd have to be able to check whether x or y is *equal* to zero.
+      // Hence, we can't define equality without the existence of equality.
       eq = function (x, y) {
         return result(x) === result(y);
       };
@@ -74,12 +81,14 @@
   /////////////////////
 
   var
+      // Boolean and
       and = function (x, y) {
         return cond(x, function () {
           return cond(y, 1);
         });
       },
 
+      // Boolean or
       or = function (x, y) {
         return cond(x,
           1,
@@ -88,10 +97,12 @@
           });
       },
 
+      // Boolean not
       not = function (x) {
         return cond(x, 0, 1);
       },
 
+      // Not equal to
       neq = function (x, y) {
         return not(eq(x, y));
       },
@@ -163,16 +174,21 @@
 
       // Raise x to the power of y
       exp = function (x, y) {
-        return cond(eq(y, 1),
-          x,
+        return cond(or(isZero(x), isZero(y)), 1,
           function () {
-            return exp(mult(x, x), decr(y));
+           return cond(eq(y, 1),
+              x,
+              function () {
+                return exp(mult(x, x), decr(y));
+            });
           });
       },
 
       // How the fiyuck do we handle rational numbers?
-      div = function () {
+      div = function (x, y) {
+        return cond(gt(y, 0), function () {
 
+        });
       };
 
   // Public API
