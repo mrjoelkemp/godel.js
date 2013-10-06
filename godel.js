@@ -1,9 +1,6 @@
 ;(function (window) {
   'use strict';
 
-  window.g = window.g || {};
-  var g = window.g;
-
   /////////////////////
   // Helpers
   /////////////////////
@@ -200,7 +197,7 @@
     eq: eq
   };
 
-  extend(g, base);
+  extend(window, base);
 
   var composed = {
     or: or,
@@ -219,6 +216,6 @@
     div: div
   };
 
-  extend(g, composed);
+  extend(window, composed);
 
 })(window);
