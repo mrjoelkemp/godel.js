@@ -11,21 +11,20 @@ This is a loose implementation of the *S* language of Computability, Complexity,
 The whole premise is that **you can build arithmetic from 
 just 3 simple operations**: increment, decrement, and conditional jumps.
 
-Of course, in practice, this assumes that you also have a means of testing equality. 
-Hence, there's more like 4 core operations:
-increment (`incr`), decrement (`decr`, conditional branch (`cond`), and equality (`eq`).
+Of course, Davis defines a conditional jump with a test for equality. Hence, the set of core operations is more like:
+increment (`incr`), decrement (`decr`), conditional branch (`cond`), and equality (`eq`).
 
 ### Caveats
 
 #### Negative numbers
 
 Interestingly enough, negative numbers are not supported in the algebra - thus making it toy. 
-This is mainly the result of needing a lower bound (or stopping point) for our recursion.
 
-Implementing `lt` (less than) for positive numbers is easy. Our definition of `lt` would state 
+Take for example, implementing `lt` (less than). For positive numbers, this is easy. 
+Our definition of `lt` would state 
 that *x is less than y if (through repeated decrements) x hits zero before y*. For negative numbers, 
 you'd be able to just increment x or y and see if x hits zero first. However, to determine whether you
-should decrement or increment, you need to determine if the inputs are negative. 
+should decrement or increment, you need to determine if either of the inputs are negative. 
 
 How do we determine if the inputs are negative? Well, a negative number is one that is *less than* zero...
 Hence, to implement `lt` for negative numbers, you'd need `lt` to determine if a number was negative. 
@@ -134,3 +133,7 @@ and(lt(1, 2), gt(2, 1)) => true
 ```javascript
 not(lt(2, 1)) => true
 ```
+
+### Demo
+
+http://jsfiddle.net/mrjoelkemp/PNmyk/
