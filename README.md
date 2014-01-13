@@ -1,14 +1,13 @@
 Gödel.js
 ========
 
-An attempt to build a model of computation (arithmetic, for now) from a minimal 
-set of primitives and applications of recursion and composition. 
+A simplified arithmetic built from a minimal set of primitives and applications of recursion and composition.
 
 This is a loose implementation of the *S* language of Computability, Complexity, and Languages by Davis et al.
 
 ### What is this?
 
-The whole premise is that **you can build arithmetic from 
+The whole premise is that **you can build arithmetic from
 just 3 simple operations**: increment, decrement, and conditional jumps.
 
 Of course, Davis defines a conditional jump with a test for equality. Hence, the set of core operations is more like:
@@ -18,18 +17,26 @@ increment (`incr`), decrement (`decr`), conditional branch (`cond`), and equalit
 
 #### Negative numbers
 
-Interestingly enough, negative numbers are not supported in the algebra - thus making it toy. 
+Interestingly enough, negative numbers are not supported in the algebra - thus making it toy.
 
-Take for example, implementing `lt` (less than). For positive numbers, this is easy. 
-Our definition of `lt` would state 
-that *x is less than y if (through repeated decrements) x hits zero before y*. For negative numbers, 
+Take for example, implementing `lt` (less than). For positive numbers, this is easy.
+Our definition of `lt` would state
+that *x is less than y if (through repeated decrements) x hits zero before y*. For negative numbers,
 you'd be able to just increment x or y and see if x hits zero first. However, to determine whether you
-should decrement or increment, you need to determine if either of the inputs are negative. 
+should decrement or increment, you need to determine if either of the inputs are negative.
 
 How do we determine if the inputs are negative? Well, a negative number is one that is *less than* zero...
-Hence, to implement `lt` for negative numbers, you'd need `lt` to determine if a number was negative. 
+Hence, to implement `lt` for negative numbers, you'd need `lt` to determine if a number was negative.
 
 This is why the algebra only supports positive numbers.
+
+#### Floating point numbers
+
+Floating point numbers would add a wealth of complexity to the algebra.
+Base operations like `sub` would need to account for the subtraction of decimals –
+requiring a more powerful `decr` and base primitives to determine if a number is a float.
+
+In an attempt to adhere as closely as possible to the *S* language, the algebra only supports integers.
 
 ### The computational model, thus far:
 
@@ -136,4 +143,4 @@ not(lt(2, 1)) => true
 
 ### Demo
 
-http://jsfiddle.net/mrjoelkemp/PNmyk/
+[[http://mrjoelkemp.github.io/godel.js/]]
