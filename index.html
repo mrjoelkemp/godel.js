@@ -7,39 +7,60 @@
 
     <link rel="stylesheet" href="stylesheets/styles.css">
     <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <link rel="stylesheet" href="lib/CodeMirror-3.20.0/lib/codemirror.css">
+    <script src="lib/CodeMirror-3.20.0/lib/codemirror.js"></script>
+    <script src="godel.js"></script>
+
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
   </head>
   <body>
+  <a href="https://github.com/mrjoelkemp/godel.js"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
     <div class="wrapper">
       <header>
-        <h1>Godel.js</h1>
-        <p>Gödel.js: An attempt to build a model of computation from a minimum set of primitives and applications of recursion and composition.</p>
+        <h1>Gödel.js</h1>
+        <p>Gödel.js: A simplified arithmetic model built from a minimum set of primitives and applications of recursion and composition.</p>
 
-        <p class="view"><a href="https://github.com/mrjoelkemp/godel.js">View the Project on GitHub <small>mrjoelkemp/godel.js</small></a></p>
-
-
-        <ul>
-          <li><a href="https://github.com/mrjoelkemp/godel.js/zipball/master">Download <strong>ZIP File</strong></a></li>
-          <li><a href="https://github.com/mrjoelkemp/godel.js/tarball/master">Download <strong>TAR Ball</strong></a></li>
-          <li><a href="https://github.com/mrjoelkemp/godel.js">View On <strong>GitHub</strong></a></li>
-        </ul>
+        <span>Try out some godel.js operations here:</span>
+        <textarea id='editor' autofocus placeholder='Play with godel.js here'>add(2, 2)</textarea>
+        <br />
+        <button id='submit'>Run</button>
+        <br />
+        <span>See the output here:</span>
+        <br />
+        <textarea id='console' readonly></textarea>
       </header>
+      <script>
+        var
+            // editor = CodeMirror.fromTextArea(document.getElementById('editor'), {
+            //   mode: "text/javascript"
+            // }),
+            editor = document.getElementById('editor'),
+            konsole = document.getElementById('console')
+            executeCode = function () {
+              konsole.value = eval.call(window, editor.value);
+            };
+
+        document.getElementById('submit').addEventListener('click', executeCode);
+        document.addEventListener('keypress', function (event) {
+          if (event.keyCode === 13) {
+            executeCode();
+            event.preventDefault();
+          }
+        });
+      </script>
       <section>
         <h1>
 <a name="g%C3%B6deljs" class="anchor" href="#g%C3%B6deljs"><span class="octicon octicon-link"></span></a>Gödel.js</h1>
 
-<p>An attempt to build a model of computation (arithmetic, for now) from a minimal 
-set of primitives and applications of recursion and composition. </p>
-
-<p>This is a loose implementation of the <em>S</em> language of Computability, Complexity, and Languages by Davis et al.</p>
+<p>This is a loose, JavaScript implementation of the <em>S</em> language of Computability, Complexity, and Languages by Davis et al.</p>
 
 <h3>
 <a name="what-is-this" class="anchor" href="#what-is-this"><span class="octicon octicon-link"></span></a>What is this?</h3>
 
-<p>The whole premise is that <strong>you can build arithmetic from 
+<p>The whole premise is that <strong>you can build arithmetic from
 just 3 simple operations</strong>: increment, decrement, and conditional jumps.</p>
 
 <p>Of course, Davis defines a conditional jump with a test for equality. Hence, the set of core operations is more like:
@@ -53,9 +74,9 @@ increment (<code>incr</code>), decrement (<code>decr</code>), conditional branch
 
 <p>Interestingly enough, negative numbers are not supported in the algebra - thus making it toy. </p>
 
-<p>Take for example, implementing <code>lt</code> (less than). For positive numbers, this is easy. 
-Our definition of <code>lt</code> would state 
-that <em>x is less than y if (through repeated decrements) x hits zero before y</em>. For negative numbers, 
+<p>Take for example, implementing <code>lt</code> (less than). For positive numbers, this is easy.
+Our definition of <code>lt</code> would state
+that <em>x is less than y if (through repeated decrements) x hits zero before y</em>. For negative numbers,
 you'd be able to just increment x or y and see if x hits zero first. However, to determine whether you
 should decrement or increment, you need to determine if either of the inputs are negative. </p>
 
@@ -64,6 +85,13 @@ Hence, to implement <code>lt</code> for negative numbers, you'd need <code>lt</c
 
 <p>This is why the algebra only supports positive numbers.</p>
 
+<h4>
+<a name="floating-point-numbers" class="anchor" href="#floating-point-numbers"><span class="octicon octicon-link"></span></a>Floating point numbers</h4>
+
+<p>Floating point numbers would add a wealth of complexity to the algebra. Base operations like <span class="nx">sub</span> would need to account
+for the subtraction of decimals – requiring a more powerful <span class="nx">decr</span> and base primitives to determine if a number is a float.</p>
+
+<p>This is why the algebra only supports integers.</p>
 <h3>
 <a name="the-computational-model-thus-far" class="anchor" href="#the-computational-model-thus-far"><span class="octicon octicon-link"></span></a>The computational model, thus far:</h3>
 
@@ -170,10 +198,6 @@ Hence, to implement <code>lt</code> for negative numbers, you'd need <code>lt</c
 <div class="highlight highlight-javascript"><pre><span class="nx">not</span><span class="p">(</span><span class="nx">lt</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="o">=&gt;</span> <span class="kc">true</span>
 </pre></div>
 
-<h3>
-<a name="demo" class="anchor" href="#demo"><span class="octicon octicon-link"></span></a>Demo</h3>
-
-<p><a href="http://jsfiddle.net/mrjoelkemp/PNmyk/">http://jsfiddle.net/mrjoelkemp/PNmyk/</a></p>
       </section>
       <footer>
         <p>This project is maintained by <a href="https://github.com/mrjoelkemp">mrjoelkemp</a></p>
@@ -181,6 +205,6 @@ Hence, to implement <code>lt</code> for negative numbers, you'd need <code>lt</c
       </footer>
     </div>
     <script src="javascripts/scale.fix.js"></script>
-    
+
   </body>
 </html>
